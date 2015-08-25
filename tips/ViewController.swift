@@ -21,14 +21,28 @@ class ViewController: UIViewController {
         
         tipLabel.text = "$0.00"
         totalLabel.text = "$0.00"
+
+        // Set focus on billField, pulls up num keypad
         self.billField.becomeFirstResponder();
         
         var defaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()
         
-        if let tipsIsNotNill = defaults.objectForKey("tipPercentage") as? Int {
-            self.tipControl.selectedSegmentIndex = defaults.objectForKey("tipPercentage") as! Int
+        // Get lastsaved date and compare to current date
+        let lastsaved = defaults.objectForKey("lastsaved") as! NSDate!
+        let currentdate = NSDate()
+        let cal = NSCalendar.currentCalendar()
+        let components = cal.components(.CalendarUnitMinute, fromDate: lastsaved, toDate: currentdate, options: nil)
+
+        // If last saved is less than 10 minutes, restore values
+        if components.minute < 10 {
             
-            println(self.tipControl.selectedSegmentIndex)
+            self.totalLabel.text = defaults.objectForKey("totalLabel") as? String
+            self.tipLabel.text = defaults.objectForKey("tipLabel") as? String
+            self.tipControl.selectedSegmentIndex = defaults.objectForKey("percentage") as! Int
+        } else {
+            
+            // Set tip percentage defaults
+            self.tipControl.selectedSegmentIndex = defaults.objectForKey("tipPercentage") as! Int
         }
 
     }
@@ -51,15 +65,15 @@ class ViewController: UIViewController {
         
         tipLabel.text = String(format: "$%.2f", tip)
         totalLabel.text = String(format: "$%.2f", total)
+        
+        
+        // Store all changes in user defaults
         var defaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()
         
-        
-        let calendar = NSCalendar.currentCalendar()
-        
         defaults.setObject(self.tipLabel.text, forKey: "tipLabel")
-        defaults.setObject(self.totalLabel.text forKey: "totalLabel")
+        defaults.setObject(self.totalLabel.text, forKey: "totalLabel")
         defaults.setObject(self.tipControl.selectedSegmentIndex, forKey: "percentage")
-        defaults.setObject(calendar forKey: "totalLabel")
+        defaults.setObject(NSDate(), forKey:"lastsaved")
         
 
     }

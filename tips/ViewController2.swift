@@ -18,6 +18,7 @@ class ViewController2: UIViewController {
 
         // Do any additional setup after loading the view.
 
+        // Restore user defaults percentage
         var defaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()
         
         if let tipsIsNotNill = defaults.objectForKey("tipPercentage") as? Int {
@@ -35,11 +36,11 @@ class ViewController2: UIViewController {
     
     @IBAction func tipChanged(sender: AnyObject) {
         
+        
+        // Save percentage defaults
         var defaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()
         
         defaults.setObject(self.defTipControl.selectedSegmentIndex, forKey: "tipPercentage")
-        
-        println(self.defTipControl.selectedSegmentIndex)
         
         defaults.synchronize()
     }
