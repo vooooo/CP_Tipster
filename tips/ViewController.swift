@@ -44,6 +44,7 @@ class ViewController: UIViewController {
             // Set tip percentage defaults
             self.tipControl.selectedSegmentIndex = defaults.objectForKey("tipPercentage") as! Int
         }
+        self.view.backgroundColor = UIColor.orangeColor()
 
     }
     
